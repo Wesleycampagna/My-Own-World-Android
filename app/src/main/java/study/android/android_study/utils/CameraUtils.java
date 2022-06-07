@@ -1,20 +1,13 @@
 package study.android.android_study.utils;
 
+import static android.content.Context.CAMERA_SERVICE;
+
 import android.app.Activity;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
-import android.os.Build;
 import android.util.SparseIntArray;
 import android.view.Surface;
-
-/**
- * Code auto generate by Google at: https://developers.google.com/ml-kit/vision/barcode-scanning/android#java
- */
-
-import androidx.annotation.RequiresApi;
-
-import static android.content.Context.CAMERA_SERVICE;
 
 public class CameraUtils {
 
@@ -30,7 +23,6 @@ public class CameraUtils {
      * Get the angle by which an image must be rotated given the device's current
      * orientation.
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private int getRotationCompensation(String cameraId, Activity activity, boolean isFrontFacing)
             throws CameraAccessException {
         // Get the device's current rotation relative to its "native" orientation.

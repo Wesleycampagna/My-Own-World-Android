@@ -1,12 +1,16 @@
 package study.android.android_study.modelview_view_model;
 
+import static androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST;
+
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -31,10 +35,10 @@ import androidx.databinding.DataBindingUtil;
 
 import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
 import java.io.File;
@@ -48,8 +52,6 @@ import study.android.android_study.R;
 import study.android.android_study.camera.BarcodeAnalyzer;
 import study.android.android_study.databinding.CameraViewBinding;
 import study.android.android_study.utils.Logger;
-
-import static androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST;
 
 public class CameraActivity extends AppCompatActivity {
 
@@ -114,7 +116,7 @@ public class CameraActivity extends AppCompatActivity {
 
         String name = "aaaaaa.jpg";
 
-        Logger.debug(name);
+        Logger.debug("name: " + name);
         File photoFile = new File (
             outputDirectory,
                 name);
@@ -154,7 +156,10 @@ public class CameraActivity extends AppCompatActivity {
 
                         int valueType = barcode.getValueType();
 
-                        Logger.debug(rawValue);
+                        Log.d("TESTEE", "some text");
+
+                        Logger.debug("rawValue: " + rawValue);
+                        Logger.debug("valueType: " + valueType);
                         Toast.makeText(this, rawValue, Toast.LENGTH_SHORT).show();
 
 //                      See API reference for complete list of supported types
@@ -170,6 +175,8 @@ public class CameraActivity extends AppCompatActivity {
                                 String url = barcode.getUrl().getUrl();
                                 Logger.debug(String.format("title: %s | url: %s", title, url));
                                 break;
+                            default:
+                                Logger.debug("pass here");
                         }
                     }
                     imageProxy.close();
@@ -210,15 +217,15 @@ public class CameraActivity extends AppCompatActivity {
 
                 // Bind use cases to camera
                 Camera camera = cameraProvider.bindToLifecycle (
-                        this, cameraSelector, preview, imageCapture, barcodeAnalyzer);
+                        CameraActivity.this, cameraSelector, preview, imageCapture, barcodeAnalyzer);
 
                 // Set time to autoFocus
-                activateFocusAtEvery(2, camera);
+                activateFocusAtEvery(1, camera);
 
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-        }, ContextCompat.getMainExecutor(this));
+        }, ContextCompat.getMainExecutor((Context) this));
         Logger.debug("Iniciei a camera! ");
     }
 
@@ -250,7 +257,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private File getOutputDirectory() {
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        Logger.debug(path.getAbsolutePath());
+        Logger.debug("path: " + path.getAbsolutePath());
         return path;
     }
 

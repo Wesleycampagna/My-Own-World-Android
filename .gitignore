@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 .idea/
+.idea/*
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
